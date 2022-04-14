@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Collector";
+
+service Collector {
+  rpc Init (InitRequest) returns (TrackReply) {}
+  rpc Track (TrackRequest) returns (TrackReply);
+  rpc TrackError (TrackErrorRequest) returns (TrackReply);
+  rpc Shutdown (ShutdownRequest) returns (TrackReply);
+  rpc HeartBeat (HeartBeatRequest) returns (TrackReply);
+}
+
+message InitRequest {
+    string message_id = 1;
+    string app_id = 2;
+    string app_version = 3;
+    string module_name = 4;
+    string module_version = 5;
+    string ram = 6;
+    string cpu = 7;
+    string arch = 8;
+    string os_name = 9;
+    string os_version = 10;
+    string locale = 11;
+    google.protobuf.Timestamp date_time = 12;
+}
+
+message TrackRequest {
+    string message_id = 1;
+    string session_id = 2;
+    string name = 3;
+    google.protobuf.Timestamp date_time = 4;
+    google.protobuf.Value payload = 5;
+}
+
+message TrackErrorRequest {
+    string message_id = 1;
+    string session_id = 2;
+    string name = 3;
+    google.protobuf.Timestamp date_time = 4;
+    google.protobuf.Value payload = 5;
+}
+
+message ShutdownRequest {
+    string message_id = 1;
+    google.protobuf.Timestamp date_time = 2;
+}
+
+message HeartBeatRequest {
+    string message_id = 1;
+    string session_id = 2;
+    google.protobuf.Timestamp date_time = 3;
+}
+
+message TrackReply {
+    bool ack = 1;
+    string session_id = 2;
+    string message_id = 3;
+}
