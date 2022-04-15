@@ -1,12 +1,20 @@
 namespace Collector.Models;
 
+public enum EventType
+{
+    Init,
+    Track,
+    TrackError,
+    Shutdown,
+}
+
 public class Event
 {
     public string MessageId { get; set; }
 
     public string SessionId { get; set; }
 
-    public string EventType { get; set; }
+    public EventType EventType { get; set; }
 
     public string? Name { get; set; }
 
