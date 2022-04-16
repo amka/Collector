@@ -1,4 +1,6 @@
 using Collector.Services;
+using NATS.Client;
+using NATS.Client.JetStream;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
+
+// Create a new connection factory to create
+// a connection.
+var cf = new ConnectionFactory();
+
+// Creates a live connection to the default
+// NATS Server running locally
+var c = cf.CreateConnection();
+var jetStream = c.CreateJetStreamContext();
+builder.Services.AddTransient<IJetStream>(_ => jetStream);
 
 var app = builder.Build();
 
