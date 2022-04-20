@@ -3,6 +3,7 @@ using NATS.Client;
 using NATS.Client.JetStream;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
 
 // Additional configuration is required to successfully run gRPC on macOS.
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
@@ -16,7 +17,7 @@ var cf = new ConnectionFactory();
 
 // Creates a live connection to the default
 // NATS Server running locally
-var c = cf.CreateConnection();
+var c = cf.CreateConnection(builder.Configuration.GetValue("NATS_URL", "nats://localhost:4222"));
 var jetStream = c.CreateJetStreamContext();
 builder.Services.AddTransient<IJetStream>(_ => jetStream);
 
